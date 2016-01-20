@@ -121,7 +121,7 @@ def password_reset_request():
     return render_template('auth/reset_password.html', form=form)
 
 
-@auth.route('/reset/<token>',methods=['GET', 'POST'])
+@auth.route('/reset/<token>', methods=['GET', 'POST'])
 def password_reset(token):
     if not current_user.is_anonymous:
         return redirect(url_for('main.index'))

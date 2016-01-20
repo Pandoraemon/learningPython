@@ -8,7 +8,7 @@ class Config():
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     FLASK_MAIL_SUBJECT_PREFIX = '[Myweibo]'
     FLASK_MAIL_SENDER = 'pz880304@163.com'
-    FLASK_ADMIN = os.environ.get('FLASK_ADMIN')
+    MYWEIBO_ADMIN = os.environ.get('MYWEIBO_ADMIN')
 
     @staticmethod
     def init_app(app):
