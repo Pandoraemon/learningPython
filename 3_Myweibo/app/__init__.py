@@ -6,6 +6,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 from config import config
 
+
 bootstrap = Bootstrap()
 mail = Mail()
 moment = Moment()

@@ -8,7 +8,7 @@ class Config():
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     FLASK_MAIL_SUBJECT_PREFIX = '[Myweibo]'
     FLASK_MAIL_SENDER = 'pz880304@163.com'
-    MYWEIBO_ADMIN = os.environ.get('MYWEIBO_ADMIN')
+    MYWEIBO_ADMIN = 'pz880304@163.com'
 
     @staticmethod
     def init_app(app):
@@ -20,7 +20,7 @@ class DevelopmentConfig(Config):
     MAIL_SERVER = 'smtp.163.com'
     MAIL_PORT = 587
     MAIL_USE_SSL = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_USERNAME = 'pz880304'
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
                               'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
