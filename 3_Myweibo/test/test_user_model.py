@@ -2,6 +2,7 @@ import unittest
 import time
 from app.models import User, Role, AnonymousUser, Permission
 from app import create_app, db
+from flask import current_app
 
 
 class UserModelTestCase(unittest.TestCase):
@@ -82,6 +83,15 @@ class UserModelTestCase(unittest.TestCase):
         u = User(email='john@163.com', password='cat')
         self.assertTrue(u.can(Permission.WRITE_ARTICLES))
         self.assertFalse(u.can(Permission.MODERATE_COMMENTS))
+
+    def test_roles(self):
+        u1 = User(email='pandora@163.com', password='cat')
+        u2 = User(email=current_app.config['MYWEIBO_ADMIN'], password='dog')
+        self.assertTrue(u1.role == Role.query.filter_by(default=True).first())
+        self.assertTrue(u2.role == Role.query.filter_by(permissions=0xff).first())
+
+    def db_is_not_none(self):
+        self.assertTrue(Role.query.all())
 
     def test_anonymous_user(self):
         u = AnonymousUser()
