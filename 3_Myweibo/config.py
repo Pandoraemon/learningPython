@@ -9,6 +9,7 @@ class Config():
     FLASK_MAIL_SUBJECT_PREFIX = '[Myweibo]'
     FLASK_MAIL_SENDER = 'pz880304@163.com'
     MYWEIBO_ADMIN = 'pz880304@163.com'
+    FLASK_POSTS_PER_PAGE = 20
 
     @staticmethod
     def init_app(app):
