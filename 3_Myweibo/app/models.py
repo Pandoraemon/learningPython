@@ -80,10 +80,10 @@ class User(UserMixin, db.Model):
                                lazy='dynamic',
                                cascade='all, delete-orphan')
     followers = db.relationship('Follow',
-                               foreign_keys=[Follow.followed_id],
-                               backref=db.backref('followed', lazy='joined'),
-                               lazy='dynamic',
-                               cascade='all, delete-orphan')
+                                foreign_keys=[Follow.followed_id],
+                                backref=db.backref('followed', lazy='joined'),
+                                lazy='dynamic',
+                                cascade='all, delete-orphan')
 
     @staticmethod
     def generate_fake(count=100):
@@ -192,11 +192,11 @@ class User(UserMixin, db.Model):
 
     def is_following(self, user):
         return self.followed.filter_by(
-            followed_id=user.id).first() is not None
+                followed_id=user.id).first() is not None
 
     def is_followed_by(self, user):
         return self.followers.filter_by(
-            follower_id=user.id).first() is not None
+                follower_id=user.id).first() is not None
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -237,6 +237,7 @@ class Post(db.Model):
                         'h1', 'h2', 'h3', 'p']
         target.body_html = bleach.linkify(bleach.clean(markdown(value, output_format='html'),
                                                        tags=allowed_tags, strip=True))
+
 
 db.event.listen(Post.body, 'set', Post.on_changed_body)
 

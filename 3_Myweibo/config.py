@@ -10,6 +10,7 @@ class Config():
     FLASK_MAIL_SENDER = 'pz880304@163.com'
     MYWEIBO_ADMIN = 'pz880304@163.com'
     FLASK_POSTS_PER_PAGE = 20
+    FLASK_FOLLOWERS_PER_PAGE = 100
 
     @staticmethod
     def init_app(app):
