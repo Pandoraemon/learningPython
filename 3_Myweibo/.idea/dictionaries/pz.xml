@@ -1,10 +1,25 @@
 <component name="ProjectDictionaryState">
   <dictionary name="pz">
     <words>
+      <w>blockquote</w>
       <w>datebase</w>
+      <w>dropdown</w>
+      <w>gravatar</w>
+      <w>identicon</w>
+      <w>itsdangerous</w>
+      <w>jinja</w>
+      <w>joson</w>
+      <w>mako</w>
+      <w>myblog</w>
       <w>myweibo</w>
+      <w>navbar</w>
+      <w>oldvalue</w>
+      <w>pagedown</w>
       <w>sqlalchemy</w>
       <w>sqlite</w>
+      <w>timeline</w>
+      <w>unfollow</w>
+      <w>werkzeug</w>
     </words>
   </dictionary>
 </component>
