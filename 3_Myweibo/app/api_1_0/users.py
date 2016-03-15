@@ -1,5 +1,5 @@
 from flask import jsonify, request, current_app, url_for
-from . import  api
+from . import api
 from ..models import User, Post
 
 
@@ -34,7 +34,7 @@ def get_user_posts(id):
 @api.route('/users/<int:id>/timeline/')
 def get_user_followed_posts(id):
     user = User.query.get_or_404(id)
-    page = request.arge.get('page', 1, type=int)
+    page = request.args.get('page', 1, type=int)
     pagination = user.followed_posts.order_by(Post.timestamp.desc()).paginate(
         page, per_page=current_app.config['FLASK_POSTS_PER_PAGE'],
         error_out=False)

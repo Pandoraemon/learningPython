@@ -1,7 +1,7 @@
 from flask import jsonify, request, g, url_for, current_app
 from .. import db
 from ..models import Post, Permission, Comment
-from .import api
+from . import api
 from .decorators import permission_required
 
 
@@ -32,7 +32,7 @@ def get_comment(id):
     return jsonify(comment.to_json())
 
 
-@api.route('posts/<int:id>/comments/')
+@api.route('/posts/<int:id>/comments/')
 def get_post_comments(id):
     post = Post.query.get_or_404(id)
     page = request.args.get('page', 1, type=int)
@@ -64,4 +64,4 @@ def new_post_comment(id):
     db.session.add(comment)
     db.session.commit()
     return jsonify(comment.to_json()), 201, \
-           {'Location': url_for('api.get_comment', id=comment.id, _external=True)}
+        {'Location': url_for('api.get_comment', id=comment.id, _external=True)}

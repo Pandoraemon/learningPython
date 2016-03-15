@@ -23,10 +23,10 @@ class APITestCase(unittest.TestCase):
 
     def get_api_headers(self, username, password):
         return {
-            'Authorization': 'Basic' + b64encode(
+            'Authorization': 'Basic ' + b64encode(
                 (username + ':' + password).encode('utf-8')).decode('utf-8'),
-            'Accept': 'application\json',
-            'Content-Type': 'application\json'}
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'}
 
     def test_404(self):
         response = self.client.get(
@@ -52,7 +52,7 @@ class APITestCase(unittest.TestCase):
         # authenticate with bad password
         response = self.client.get(
             url_for('api.get_posts'),
-            headers=self.get_api_headers('john@gdmail.com', 'dog'))
+            headers=self.get_api_headers('john@gmail.com', 'dog'))
         self.assertTrue(response.status_code == 401)
 
     def test_token_auth(self):
@@ -72,7 +72,7 @@ class APITestCase(unittest.TestCase):
         # get a token
         response = self.client.get(
             url_for('api.get_token'),
-            header=self.get_api_headers('john@gmail.com', 'cat'))
+            headers=self.get_api_headers('john@gmail.com', 'cat'))
         self.assertTrue(response.status_code == 200)
         json_response = json.loads(response.data.decode('utf-8'))
         self.assertIsNotNone(json_response.get('token'))
@@ -81,5 +81,6 @@ class APITestCase(unittest.TestCase):
         # issue a request with the token
         response = self.client.get(
             url_for('api.get_posts'),
-            header=self.get_api_headers(token, ''))
+            headers=self.get_api_headers(token, ''))
         self.assertTrue(response.status_code == 200)
+
