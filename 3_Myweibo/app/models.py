@@ -71,8 +71,8 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
-    member_since = db.Column(db.DATETIME(), default=datetime.utcnow)
-    last_seen = db.Column(db.DATETIME(), default=datetime.utcnow)
+    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     followed = db.relationship('Follow',
@@ -104,7 +104,7 @@ class User(UserMixin, db.Model):
         seed()
         for i in range(count):
             u = User(email=forgery_py.internet.email_address(),
-                     username=forgery_py.internet.user_name(),
+                     username=forgery_py.internet.user_name(True),
                      password=forgery_py.lorem_ipsum.word(),
                      confirmed=True,
                      name=forgery_py.name.full_name(),
@@ -215,26 +215,28 @@ class User(UserMixin, db.Model):
             .filter(Follow.follower_id == self.id)
 
     def to_json(self):
-        json_user={
+        json_user = {
             'url': url_for('api.get_post', id=self.id, _external=True),
             'username': self.username,
             'member_since': self.member_since,
             'last_seen': self.last_seen,
-            'posts': url_for('api.get_user_posts', id-self.id, _external=True),
-            'followed_posts': url_for('api.get_user_followed_posts', id=self.id, _external=True),
+            'posts': url_for('api.get_user_posts', id=self.id, _external=True),
+            'followed_posts': url_for('api.get_user_followed_posts',
+                                      id=self.id, _external=True),
             'post_count': self.posts.count()
         }
         return json_user
 
     def generate_auth_token(self, expiration):
-        s = Serializer(current_app.config['SECRET_KEY'], expires_in=expiration)
+        s = Serializer(current_app.config['SECRET_KEY'],
+                       expires_in=expiration)
         return s.dumps({'id': self.id}).decode('ascii')
 
     @staticmethod
     def verify_auth_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
-            data = s.load(token)
+            data = s.loads(token)
         except:
             return None
         return User.query.get(data['id'])
@@ -275,7 +277,7 @@ class Post(db.Model):
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
-                        'em' 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
                         'h1', 'h2', 'h3', 'p']
         target.body_html = bleach.linkify(bleach.clean(markdown(value, output_format='html'),
                                                        tags=allowed_tags, strip=True))
@@ -287,8 +289,7 @@ class Post(db.Model):
             'body_html': self.body_html,
             'timestamp': self.timestamp,
             'author': url_for('api.get_user', id=self.author_id, _external=True),
-            'comments': url_for('api.get_post_comments'
-                                '', id=self.id, _external=True),
+            'comments': url_for('api.get_post_comments', id=self.id, _external=True),
             'comment_count': self.comments.count()
         }
         return json_post
@@ -321,7 +322,7 @@ class Comment(db.Model):
     def to_json(self):
         json_comment = {
             'url': url_for('api.get_comment', id=self.id, _external=True),
-            'post': url_for('api.get_post', id=self.id, _external=True),
+            'post': url_for('api.get_post', id=self.post_id, _external=True),
             'body': self.body,
             'body_html': self.body_html,
             'timestamp': self.timestamp,
@@ -333,7 +334,7 @@ class Comment(db.Model):
     def from_json(json_comment):
         body = json_comment.get('body')
         if body is None or body == '':
-            raise ValidationError('comment does not have body')
+            raise ValidationError('comment does not have a body')
         return Comment(body=body)
 
 
