@@ -2,6 +2,7 @@
   <profile version="1.0">
     <option name="myName" value="Project Default" />
     <inspection_tool class="PyArgumentListInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyBroadExceptionInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
@@ -46,6 +47,8 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="app.api_1_0.errors" />
+          <option value="dict.*" />
+          <option value="test.test_selenium.SeleniumTestCase.app_context" />
         </list>
       </option>
     </inspection_tool>
